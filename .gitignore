@@ -1,0 +1,11 @@
+.vs/
+Reckon.Coding.Services/Reckon.Coding.Services.csproj.user
+Reckon.Coding.Services.Tests/bin/
+Reckon.Coding.Services.Tests/obj/
+Reckon.Coding.Services/bin/
+Reckon.Coding.Services/obj/
+*.user
+Reckon.Coding.WebApi.IntegrationTests/bin/
+Reckon.Coding.WebApi.IntegrationTests/obj/
+Reckon.Coding.WebApi/bin/
+Reckon.Coding.WebApi/obj/
