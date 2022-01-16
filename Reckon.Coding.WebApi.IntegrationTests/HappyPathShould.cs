@@ -43,7 +43,7 @@ namespace Reckon.Coding.WebApi.IntegrationTests {
             var response = await HttpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
-            var result = JsonHelper.ToObject<FindOccurrencesResult>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonHelper.ToObject<FindOccurrencesResult>(await response.Content.ReadAsStringAsync());
             Assert.Equal("3, 6, 10", result.Results.First(r => r.Subtext == "is").Result);
             Assert.Equal(FindOccurrencesService.NO_MATCH, result.Results.First(r => r.Subtext == "zzzz").Result);
 
