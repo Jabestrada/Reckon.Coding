@@ -15,13 +15,17 @@ namespace Reckon.Coding.WebApi.IntegrationTests {
         [Fact]
         public async Task BeWiredCorrectly() {
             MockReckonServer.Given(ReckonWireMockHelper.MakeTextToSearchServiceRequest())
+                            .WithTitle("TextToSearchServiceRequest")
+                            .RespondWith(Response.Create().WithStatusCode(500));
+            MockReckonServer.Given(ReckonWireMockHelper.MakeSubTextServiceRequest())
+                            .WithTitle("SubTextServiceRequest")
                             .RespondWith(Response.Create().WithStatusCode(500));
             var request = FindOccurrencesRequestBuilder.BuildFindOccurencesRequest();
             
             _ = await HttpClient.SendAsync(request);
 
-            // Total request count = first attempt + configured retry count
-            Assert.Equal(1 + RetryPolicyCount, MockReckonServer.LogEntries.Count());
+            // Total expected request count = (first attempt + configured retry count) * 2 URLs
+            Assert.Equal((1 + RetryPolicyCount) * 2, MockReckonServer.LogEntries.Count());
             foreach (var log in MockReckonServer.LogEntries) {
                 Assert.Equal((int)HttpStatusCode.InternalServerError, log.ResponseMessage.StatusCode);
             }

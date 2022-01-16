@@ -26,14 +26,19 @@ namespace Reckon.Coding.Services.FindOccurrences {
 
         public async Task<FindOccurrencesResult> SendIndicesOfAsync() {
             try {
-                var mainText = await _textToSearchService.GetTextAsync();
-                var subTexts = await _subTextService.GetSubTextsAsync();
+                var mainTextTask = _textToSearchService.GetTextAsync();
+                var subTextTask = _subTextService.GetSubTextsAsync();
+                await Task.WhenAll(mainTextTask, subTextTask);
+
+                var mainText = mainTextTask.Result;
+                var subTexts = subTextTask.Result;
                 var result = GetIndicesOf(mainText, subTexts);
                 var findOccurencesResult = new FindOccurrencesResult {
                     Candidate = "Julius Estrada",
                     Text = mainText,
                     Results = result
                 };
+
                 await _resultsConsumerService.ConsumeResultAsync(findOccurencesResult);
                 return findOccurencesResult;
             } catch (Exception exc) {
