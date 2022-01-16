@@ -12,9 +12,9 @@ namespace Reckon.Coding.Services.Extensions {
             }
 
             var substrLen = substring.Length;
-            for (var mainIdx = 0; mainIdx < mainString.Length; mainIdx++) {
+            for (var mainIdx = 0; mainIdx < mainString.Length - substrLen; mainIdx++) {
                 int substrIdx = 0;
-                for (; substrIdx < substrLen && mainIdx + substrIdx < mainString.Length; substrIdx++) {
+                for (; substrIdx < substrLen; substrIdx++) {
                     if (char.ToLower(mainString[mainIdx + substrIdx]) != char.ToLower(substring[substrIdx])) {
                         // Match failed, try next char.
                         break;
@@ -22,7 +22,7 @@ namespace Reckon.Coding.Services.Extensions {
                 }
                 if (substrIdx == substrLen) {
                     // Found match; store as 1-based per reqs.
-                    output.Add(1 + ((substrIdx + mainIdx) - substrLen));
+                    output.Add(1 + mainIdx);
                 }
             }
             return output;
